@@ -40,7 +40,13 @@ protected:
 	TArray<AActor*> ElectricTargets;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
+		TSubclassOf<AActor> NormalAttackActor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
 		TSubclassOf<AActor>	RadioactiveActor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
+		float NormalAttackTimer = 0.5f;
+
+	float CurrentNormalAttackTimer = 0.0f;
 
 public:	
 	// Called every frame
@@ -52,5 +58,8 @@ public:
 		void StartAttack();
 
 	UFUNCTION(BlueprintCallable)
-		void SetElectricTargets(TArray<AActor*>& targets);
+		void BasicAttack();
+
+	UFUNCTION(BlueprintCallable)
+		void SetElectricTargets(TArray<AActor*> targets);
 };

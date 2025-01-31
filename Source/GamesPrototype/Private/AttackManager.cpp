@@ -4,6 +4,7 @@
 #include "AttackManager.h"
 
 #include "ConductiveWall.h"
+#include "StatsManager.h"
 
 #define RADIOACTIVE_RANGE 100.0f;
 #define XRAY_RANGE 1000.0f;
@@ -32,12 +33,28 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 {
 	for (int i = 0; i < ElectricTargets.Num(); i++)
 	{
-		if (ElectricTargets[i] == nullptr)
+		if (ElectricTargets[i] != nullptr)
 		{
 			AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
 			if (wall != nullptr && IsValid(wall))
 			{
-				
+				UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
+			}
+			else
+			{
+				APawn* playerPawn = Cast<APawn>(ElectricTargets[i]);
+				if (playerPawn != nullptr && IsValid(playerPawn))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("I AM A PLAYER! DEAL DAMAGE TO ME!"));
+
+					UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
+
+					if (statsManager != nullptr && IsValid(statsManager))
+					{
+						statsManager->DealDamage(levels.electricity * 2);
+						statsManager->AddRadiation(levels.radiation);
+					}
+				}
 			}
 		}
 	}
@@ -102,12 +119,14 @@ void UAttackManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	CurrentNormalAttackTimer += DeltaTime;
+
 	// ...
 }
 
 void UAttackManager::AddResource(int type)
 {
-	if (type <= 0 || type >= 3)
+	if (type < 0 || type >= 3)
 		return;
 
 	Resources.Add(type);
@@ -164,7 +183,20 @@ void UAttackManager::StartAttack()
 	Resources.Empty();
 }
 
-void UAttackManager::SetElectricTargets(TArray<AActor*>& targets)
+void UAttackManager::BasicAttack()
+{
+	UE_LOG(LogTemp, Warning, TEXT("I AM THE BASIC ATTACK"));
+
+	if (CurrentNormalAttackTimer < NormalAttackTimer)
+		return;
+
+	CurrentNormalAttackTimer = 0.0f;
+	
+	FActorSpawnParameters spawnParams;
+	GetWorld()->SpawnActor<AActor>(NormalAttackActor, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.0f), GetOwner()->GetActorRotation(), spawnParams);
+}
+
+void UAttackManager::SetElectricTargets(TArray<AActor*> targets)
 {
 	ElectricTargets = targets;
 }
