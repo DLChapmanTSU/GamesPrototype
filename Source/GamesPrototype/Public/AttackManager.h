@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RadiationSplashBase.h"
 #include "Components/ActorComponent.h"
 #include "Components/BoxComponent.h"
 #include "AttackManager.generated.h"
@@ -42,7 +43,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
 		TSubclassOf<AActor> NormalAttackActor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
-		TSubclassOf<AActor>	RadioactiveActor;
+		TSubclassOf<ARadiationSplashBase>	RadioactiveActor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
 		float NormalAttackTimer = 0.5f;
 

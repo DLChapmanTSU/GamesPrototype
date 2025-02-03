@@ -80,6 +80,11 @@ int UStatsManager::GetMaxRadiation()
 void UStatsManager::DealDamage(int damage)
 {
 	CurrentHealth -= damage;
+	if (CurrentRadiation > 0)
+	{
+		CurrentHealth -= CurrentRadiation * 2;
+		CurrentRadiation = 0;
+	}
 	UE_LOG(LogTemp, Warning, TEXT("OUCH!"));
 	if (CurrentHealth <= 0)
 		GetOwner()->Destroy();
