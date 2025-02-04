@@ -63,4 +63,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SetElectricTargets(TArray<AActor*> targets);
+
+	UFUNCTION(BlueprintCallable)
+		TArray<int> GetResources();
 };

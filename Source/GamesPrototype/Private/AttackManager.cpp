@@ -202,3 +202,8 @@ void UAttackManager::SetElectricTargets(TArray<AActor*> targets)
 {
 	ElectricTargets = targets;
 }
+
+TArray<int> UAttackManager::GetResources()
+{
+	return Resources;
+}
