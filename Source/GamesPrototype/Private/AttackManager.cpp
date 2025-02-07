@@ -6,9 +6,6 @@
 #include "ConductiveWall.h"
 #include "StatsManager.h"
 
-#define RADIOACTIVE_RANGE 100.0f;
-#define XRAY_RANGE 1000.0f;
-
 // Sets default values for this component's properties
 UAttackManager::UAttackManager()
 {
@@ -65,12 +62,17 @@ void UAttackManager::RadioactiveAttack(FAttackLevels levels)
 	AActor* owner = Cast<AActor>(GetOwner());
 	if (owner && IsValid(RadioactiveActor))
 	{
-		FVector dir = owner->GetActorForwardVector();
+		const FName TraceTag("RadioTag");
+
+		GetWorld()->DebugDrawTraceTag = TraceTag;
+		
+		FVector dir = owner->GetActorForwardVector() * 500.0f;
 
 		FHitResult hit;
 		FVector start = owner->GetActorLocation();
-		FVector end = owner->GetActorLocation() + dir * RADIOACTIVE_RANGE;
+		FVector end = owner->GetActorLocation() + dir;
 		FCollisionQueryParams queryParams;
+		queryParams.TraceTag = TraceTag;
 		queryParams.AddIgnoredActor(owner);
 
 		GetWorld()->LineTraceSingleByChannel(hit, start, end, ECollisionChannel::ECC_WorldStatic, queryParams);
@@ -83,7 +85,7 @@ void UAttackManager::RadioactiveAttack(FAttackLevels levels)
 		else
 		{
 			FActorSpawnParameters spawnParams;
-			GetWorld()->SpawnActor<AActor>(RadioactiveActor, end, FRotator(0), spawnParams);
+			GetWorld()->SpawnActor<AActor>(RadioactiveActor, owner->GetActorLocation() + dir, FRotator(0), spawnParams);
 			UE_LOG(LogTemp, Warning, TEXT("ACTOR SPAWNED"));
 		}
 	}
@@ -98,7 +100,7 @@ void UAttackManager::XRayAttack(FAttackLevels levels)
 
 		FHitResult hit;
 		FVector start = owner->GetActorLocation();
-		FVector end = owner->GetActorLocation() + dir * XRAY_RANGE;
+		FVector end = owner->GetActorLocation() + dir * 1000.0f;
 		FCollisionQueryParams queryParams;
 		queryParams.AddIgnoredActor(owner);
 
@@ -199,4 +201,9 @@ void UAttackManager::BasicAttack()
 void UAttackManager::SetElectricTargets(TArray<AActor*> targets)
 {
 	ElectricTargets = targets;
+}
+
+TArray<int> UAttackManager::GetResources()
+{
+	return Resources;
 }
