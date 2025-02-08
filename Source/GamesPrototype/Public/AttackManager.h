@@ -18,6 +18,8 @@ struct FAttackLevels
 	int radiation;
 	UPROPERTY()
 	int xray;
+	UPROPERTY()
+	int owner;
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
