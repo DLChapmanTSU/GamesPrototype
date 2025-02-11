@@ -53,12 +53,15 @@ void UElectricTree::DamageAllObjectsInTree(FAttackLevels levels)
 		APawn* pawn = Cast<APawn>(VisitedActors[i]);
 		if (pawn != nullptr && IsValid(pawn))
 		{
-			UStatsManager* manager = Cast<UStatsManager>(pawn->GetComponentByClass(UStatsManager::StaticClass()));
-
-			if (manager != nullptr && IsValid(manager))
+			if (pawn->GetUniqueID() != levels.owner)
 			{
-				manager->DealDamage(levels.electricity * 2);
-				manager->AddRadiation(levels.radiation);
+				UStatsManager* manager = Cast<UStatsManager>(pawn->GetComponentByClass(UStatsManager::StaticClass()));
+
+				if (manager != nullptr && IsValid(manager))
+				{
+					manager->DealDamage(levels.electricity * 2);
+					manager->AddRadiation(levels.radiation);
+				}
 			}
 		}
 	}
