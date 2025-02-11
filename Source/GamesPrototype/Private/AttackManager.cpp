@@ -29,9 +29,10 @@ void UAttackManager::BeginPlay()
 void UAttackManager::ElectricAttack(FAttackLevels levels)
 {
 	UE_LOG(LogTemp, Warning, TEXT("I AM THE GLORIOUS TAZER ATTACK"));
-	
+	FActorSpawnParameters spawnParams;
+	GetWorld()->SpawnActor<AActor>(TazerAttackActor, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.0f), GetOwner()->GetActorRotation(), spawnParams);
 	//-------- Replaced for Time being
-	/* UElectricTree* electricTree = NewObject<UElectricTree>();
+	 UElectricTree* electricTree = NewObject<UElectricTree>();
 	for (int i = 0; i < ElectricTargets.Num(); i++)
 	{
 		if (ElectricTargets[i] != nullptr)
@@ -53,19 +54,19 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("I AM A PLAYER! DEAL DAMAGE TO ME!"));
 
-					UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
+					/*UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
 
 					if (statsManager != nullptr && IsValid(statsManager))
 					{
 						statsManager->DealDamage(levels.electricity * 2);
 						statsManager->AddRadiation(levels.radiation);
-					}
+					}*/
 
 					electricTree->AddActorAtLayer(ElectricTargets[i], 0);
 				}
 			}
-		} */
-	//}
+		} 
+	}
 
 	/*TArray<AActor*> layerActors = electricTree->GetAllActorsOnLayer(0);
 	
@@ -96,7 +97,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 	}*/
 
 	//layerActors.Empty();
-	//electricTree->DamageAllObjectsInTree(levels);
+	electricTree->DamageAllObjectsInTree(levels);
 }
 
 void UAttackManager::RadioactiveAttack(FAttackLevels levels)
