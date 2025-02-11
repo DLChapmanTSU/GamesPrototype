@@ -28,21 +28,30 @@ void UAttackManager::BeginPlay()
 
 void UAttackManager::ElectricAttack(FAttackLevels levels)
 {
+	UE_LOG(LogTemp, Warning, TEXT("I AM THE GLORIOUS TAZER ATTACK"));
+	
+	//-------- Replaced for Time being
+	/* UElectricTree* electricTree = NewObject<UElectricTree>();
 	for (int i = 0; i < ElectricTargets.Num(); i++)
 	{
 		if (ElectricTargets[i] != nullptr)
 		{
+			if (electricTree->IsActorVisited(ElectricTargets[i]))
+				continue;
+			
 			AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
 			if (wall != nullptr && IsValid(wall))
 			{
-				//UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
+				UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
+				electricTree->AddActorAtLayer(ElectricTargets[i], 0);
+				wall->ElectricDamage(levels, electricTree, 0);
 			}
 			else
 			{
 				APawn* playerPawn = Cast<APawn>(ElectricTargets[i]);
 				if (playerPawn != nullptr && IsValid(playerPawn))
 				{
-					//UE_LOG(LogTemp, Warning, TEXT("I AM A PLAYER! DEAL DAMAGE TO ME!"));
+					UE_LOG(LogTemp, Warning, TEXT("I AM A PLAYER! DEAL DAMAGE TO ME!"));
 
 					UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
 
@@ -51,10 +60,43 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 						statsManager->DealDamage(levels.electricity * 2);
 						statsManager->AddRadiation(levels.radiation);
 					}
+
+					electricTree->AddActorAtLayer(ElectricTargets[i], 0);
+				}
+			}
+		} */
+	//}
+
+	/*TArray<AActor*> layerActors = electricTree->GetAllActorsOnLayer(0);
+	
+	for (int i = 0; i < layerActors.Num(); i++)
+	{
+		if (layerActors[i] != nullptr)
+		{
+			AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
+			if (wall != nullptr && IsValid(wall))
+			{
+				wall->ElectricDamage(levels, electricTree, 1);
+			}
+			else
+			{
+				APawn* playerPawn = Cast<APawn>(ElectricTargets[i]);
+				if (playerPawn != nullptr && IsValid(playerPawn))
+				{
+					UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
+
+					if (statsManager != nullptr && IsValid(statsManager))
+					{
+						//statsManager->DealDamage(levels.electricity * 2);
+						//statsManager->AddRadiation(levels.radiation);
+					}
 				}
 			}
 		}
-	}
+	}*/
+
+	//layerActors.Empty();
+	//electricTree->DamageAllObjectsInTree(levels);
 }
 
 void UAttackManager::RadioactiveAttack(FAttackLevels levels)
