@@ -7,7 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "Components/BoxComponent.h"
 #include "AttackManager.generated.h"
-
+#include "Tazerpoint.h"
 USTRUCT()
 struct FAttackLevels
 {
