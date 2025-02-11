@@ -46,7 +46,10 @@ protected:
 	TArray<APawn*> Pawns;
 	float CurrentDeathTime = 0.0f;
 	float CurrentTickTime = 0.0f;
+	bool HasPerformedShock = false;
+	int ShockValue = 0;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void SetShockValue(int value);
 };

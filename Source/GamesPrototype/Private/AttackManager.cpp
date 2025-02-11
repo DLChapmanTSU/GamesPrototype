@@ -121,13 +121,15 @@ void UAttackManager::RadioactiveAttack(FAttackLevels levels)
 		if (hit.IsValidBlockingHit() && IsValid(hit.GetActor()))
 		{
 			FActorSpawnParameters spawnParams;
-			GetWorld()->SpawnActor<AActor>(RadioactiveActor, hit.ImpactPoint, FRotator(0), spawnParams);
+			ARadiationSplashBase* splash = GetWorld()->SpawnActor<ARadiationSplashBase>(RadioactiveActor, hit.ImpactPoint, FRotator(0), spawnParams);
+			splash->SetShockValue(levels.electricity * 2);
 			//UE_LOG(LogTemp, Warning, TEXT("ACTOR SPAWNED"));
 		}
 		else
 		{
 			FActorSpawnParameters spawnParams;
-			GetWorld()->SpawnActor<AActor>(RadioactiveActor, owner->GetActorLocation() + dir, FRotator(0), spawnParams);
+			ARadiationSplashBase* splash = GetWorld()->SpawnActor<ARadiationSplashBase>(RadioactiveActor, owner->GetActorLocation() + dir, FRotator(0), spawnParams);
+			splash->SetShockValue(levels.electricity * 2);
 			//UE_LOG(LogTemp, Warning, TEXT("ACTOR SPAWNED"));
 		}
 	}

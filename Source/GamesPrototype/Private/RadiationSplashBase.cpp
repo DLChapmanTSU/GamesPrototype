@@ -3,6 +3,7 @@
 
 #include "RadiationSplashBase.h"
 
+#include "AttackManager.h"
 #include "StatsManager.h"
 
 
@@ -62,6 +63,25 @@ void ARadiationSplashBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (!HasPerformedShock)
+	{
+		HasPerformedShock = true;
+		if (Pawns.Num() > 0)
+		{
+			for (int i = 0; i< Pawns.Num(); i++)
+			{
+				if (Pawns[i] != nullptr && IsValid(Pawns[i]))
+				{
+					UStatsManager* manager = Cast<UStatsManager>(Pawns[i]->GetComponentByClass(UStatsManager::StaticClass()));
+					if (manager != nullptr && IsValid(manager))
+					{
+						manager->DealDamage(ShockValue);
+					}
+				}
+			}
+		}
+	}
+
 	if (CurrentTickTime >= TimePerTick)
 	{
 		for (int i = 0; i < Pawns.Num(); i++)
@@ -85,5 +105,10 @@ void ARadiationSplashBase::Tick(float DeltaTime)
 
 	if (CurrentDeathTime >= Duration)
 		Destroy();
+}
+
+void ARadiationSplashBase::SetShockValue(int value)
+{
+	ShockValue = value;
 }
 
