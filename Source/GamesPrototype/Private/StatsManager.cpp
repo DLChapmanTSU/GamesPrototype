@@ -85,7 +85,7 @@ void UStatsManager::DealDamage(int damage)
 		CurrentHealth -= CurrentRadiation * 2;
 		CurrentRadiation = 0;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("OUCH!"));
+	//UE_LOG(LogTemp, Warning, TEXT("OUCH!"));
 	if (CurrentHealth <= 0)
 		GetOwner()->Destroy();
 }
@@ -93,7 +93,7 @@ void UStatsManager::DealDamage(int damage)
 void UStatsManager::AddRadiation(int radiation)
 {
 	CurrentRadiation += radiation;
-	UE_LOG(LogTemp, Warning, TEXT("THAT BURNS!"));
+	//UE_LOG(LogTemp, Warning, TEXT("THAT BURNS!"));
 	if (CurrentRadiation > MaxRadiation)
 		CurrentRadiation = MaxRadiation;
 }
