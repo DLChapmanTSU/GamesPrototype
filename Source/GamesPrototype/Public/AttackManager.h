@@ -6,8 +6,9 @@
 #include "RadiationSplashBase.h"
 #include "Components/ActorComponent.h"
 #include "Components/BoxComponent.h"
-#include "AttackManager.generated.h"
 #include "Tazerpoint.h"
+#include "AttackManager.generated.h"
+
 USTRUCT()
 struct FAttackLevels
 {
