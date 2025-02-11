@@ -191,6 +191,7 @@ void UAttackManager::StartAttack()
 	levels.electricity = 0;
 	levels.radiation = 0;
 	levels.xray = 0;
+	levels.owner = GetOwner()->GetUniqueID();
 	for (int i = 0; i < Resources.Num(); i++)
 	{
 		if (i >= 5)
