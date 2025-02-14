@@ -16,10 +16,10 @@ class GAMESPROTOTYPE_API UElectricTree : public UObject
 	GENERATED_BODY()
 
 protected:
-	TArray<AActor*> VisitedActors;
+	TArray<TArray<AActor*>> VisitedActors;
 public:
 	bool IsActorVisited(AActor* Actor);
 	void AddActorAtLayer(AActor* Actor, int Layer);
-	TArray<AActor*> GetVisitedActors();
+	TArray<AActor*> GetVisitedActors(int Layer);
 	void DamageAllObjectsInTree(FAttackLevels levels);
 };

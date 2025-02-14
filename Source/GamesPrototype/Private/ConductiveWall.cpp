@@ -32,14 +32,17 @@ void AConductiveWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	TArray<AActor*> OverlappingActors;
-	BoxComponent->GetOverlappingActors(OverlappingActors, AActor::StaticClass());
+	TArray<UPrimitiveComponent*> OverlappingComponents;
+	BoxComponent->GetOverlappingComponents(OverlappingComponents);
 
-	for (AActor* OverlappingActor : OverlappingActors)
+	for (UPrimitiveComponent* OverlappingComponent : OverlappingComponents)
 	{
-		if (OverlappingActor != nullptr && IsValid(OverlappingActor) &&  !OverlappingActor->ActorHasTag("CollisionIgnore"))
+		if (OverlappingComponent != nullptr || IsValid(OverlappingComponent))
 		{
-			ElectricTargets.AddUnique(OverlappingActor);
+			if (!OverlappingComponent->ComponentTags.Contains(FName("CollisionIgnore")))
+			{
+				ElectricTargets.AddUnique(OverlappingComponent->GetOwner());
+			}
 		}
 	}
 }
@@ -62,7 +65,7 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 			{
 				UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
 				tree->AddActorAtLayer(ElectricTargets[i], layer);
-				wall->ElectricDamage(levels, tree, layer);
+				//wall->ElectricDamage(levels, tree, layer);
 			}
 			else
 			{
@@ -85,7 +88,7 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 		}
 	}
 	
-	/*TArray<AActor*> layerActors = tree->GetAllActorsOnLayer(layer);
+	TArray<AActor*> layerActors = tree->GetVisitedActors(layer);
 	
 	for (int i = 0; i < layerActors.Num(); i++)
 	{
@@ -93,27 +96,13 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 		{
 			if (layerActors[i]->GetUniqueID() == levels.owner)
 				continue;
-			AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
+			AConductiveWall* wall = Cast<AConductiveWall>(layerActors[i]);
 			if (wall != nullptr && IsValid(wall))
 			{
 				wall->ElectricDamage(levels, tree, layer + 1);
 			}
-			else
-			{
-				APawn* playerPawn = Cast<APawn>(ElectricTargets[i]);
-				if (playerPawn != nullptr && IsValid(playerPawn))
-				{
-					UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
-
-					if (statsManager != nullptr && IsValid(statsManager))
-					{
-						//statsManager->DealDamage(levels.electricity * 2);
-						//statsManager->AddRadiation(levels.radiation);
-					}
-				}
-			}
 		}
-	}*/
+	}
 }
 
 void AConductiveWall::ActorEnterRange(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

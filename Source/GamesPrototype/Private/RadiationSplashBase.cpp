@@ -4,6 +4,8 @@
 #include "RadiationSplashBase.h"
 
 #include "AttackManager.h"
+#include "ConductiveWall.h"
+#include "ElectricTree.h"
 #include "StatsManager.h"
 
 
@@ -58,6 +60,112 @@ void ARadiationSplashBase::OnExitRange(UPrimitiveComponent* OverlappedComp, AAct
 	}
 }
 
+void ARadiationSplashBase::ApplyShock()
+{
+	HasPerformedShock = true;
+
+	TArray<UPrimitiveComponent*> OverlappedComponents;
+	Sphere->GetOverlappingComponents(OverlappedComponents);
+	TArray<AActor*> OverlappedActors;
+	for (UPrimitiveComponent* OverlappedComp : OverlappedComponents)
+	{
+		if (OverlappedComp != nullptr || IsValid(OverlappedComp))
+		{
+			if (!OverlappedComp->ComponentTags.Contains(FName("CollisionIgnore")))
+			{
+				OverlappedActors.AddUnique(OverlappedComp->GetOwner());
+			}
+		}
+	}
+	FAttackLevels levels;
+	levels.electricity = ShockValue;
+	levels.radiation = 0;
+	levels.xray = 0;
+	levels.owner = -1;
+
+	UElectricTree* electricTree = NewObject<UElectricTree>();
+	for (int i = 0; i < OverlappedActors.Num(); i++)
+	{
+		if (OverlappedActors[i] != nullptr)
+		{
+			if (electricTree->IsActorVisited(OverlappedActors[i]))
+				continue;
+			
+			AConductiveWall* wall = Cast<AConductiveWall>(OverlappedActors[i]);
+			if (wall != nullptr && IsValid(wall))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
+				electricTree->AddActorAtLayer(OverlappedActors[i], 0);
+				//wall->ElectricDamage(levels, electricTree, 0);
+			}
+			else
+			{
+				APawn* playerPawn = Cast<APawn>(OverlappedActors[i]);
+				if (playerPawn != nullptr && IsValid(playerPawn))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("I AM A PLAYER! DEAL DAMAGE TO ME!"));
+
+					/*UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
+
+					if (statsManager != nullptr && IsValid(statsManager))
+					{
+						statsManager->DealDamage(levels.electricity * 2);
+						statsManager->AddRadiation(levels.radiation);
+					}*/
+
+					electricTree->AddActorAtLayer(OverlappedActors[i], 0);
+				}
+			}
+		} 
+	}
+
+	TArray<AActor*> layerActors = electricTree->GetVisitedActors(0);
+	
+	for (int i = 0; i < layerActors.Num(); i++)
+	{
+		if (layerActors[i] != nullptr)
+		{
+			AConductiveWall* wall = Cast<AConductiveWall>(layerActors[i]);
+			if (wall != nullptr && IsValid(wall))
+			{
+				wall->ElectricDamage(levels, electricTree, 1);
+			}
+			else
+			{
+				APawn* playerPawn = Cast<APawn>(layerActors[i]);
+				if (playerPawn != nullptr && IsValid(playerPawn))
+				{
+					UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
+
+					if (statsManager != nullptr && IsValid(statsManager))
+					{
+						//statsManager->DealDamage(levels.electricity * 2);
+						//statsManager->AddRadiation(levels.radiation);
+					}
+				}
+			}
+		}
+	}
+
+	//layerActors.Empty();
+	electricTree->DamageAllObjectsInTree(levels);
+	
+	/*if (Pawns.Num() > 0)
+	{
+		for (int i = 0; i< Pawns.Num(); i++)
+		{
+			if (Pawns[i] != nullptr && IsValid(Pawns[i]))
+			{
+				UStatsManager* manager = Cast<UStatsManager>(Pawns[i]->GetComponentByClass(UStatsManager::StaticClass()));
+				if (manager != nullptr && IsValid(manager))
+				{
+					manager->DealDamage(ShockValue);
+				}
+			}
+		}
+	}*/
+}
+
 // Called every frame
 void ARadiationSplashBase::Tick(float DeltaTime)
 {
@@ -65,21 +173,7 @@ void ARadiationSplashBase::Tick(float DeltaTime)
 
 	if (!HasPerformedShock)
 	{
-		HasPerformedShock = true;
-		if (Pawns.Num() > 0)
-		{
-			for (int i = 0; i< Pawns.Num(); i++)
-			{
-				if (Pawns[i] != nullptr && IsValid(Pawns[i]))
-				{
-					UStatsManager* manager = Cast<UStatsManager>(Pawns[i]->GetComponentByClass(UStatsManager::StaticClass()));
-					if (manager != nullptr && IsValid(manager))
-					{
-						manager->DealDamage(ShockValue);
-					}
-				}
-			}
-		}
+		ApplyShock();
 	}
 
 	if (CurrentTickTime >= TimePerTick)
