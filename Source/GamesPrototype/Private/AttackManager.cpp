@@ -45,7 +45,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
 				electricTree->AddActorAtLayer(ElectricTargets[i], 0);
-				wall->ElectricDamage(levels, electricTree, 0);
+				//wall->ElectricDamage(levels, electricTree, 0);
 			}
 			else
 			{
@@ -68,20 +68,20 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 		} 
 	}
 
-	/*TArray<AActor*> layerActors = electricTree->GetAllActorsOnLayer(0);
+	TArray<AActor*> layerActors = electricTree->GetVisitedActors(0);
 	
 	for (int i = 0; i < layerActors.Num(); i++)
 	{
 		if (layerActors[i] != nullptr)
 		{
-			AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
+			AConductiveWall* wall = Cast<AConductiveWall>(layerActors[i]);
 			if (wall != nullptr && IsValid(wall))
 			{
 				wall->ElectricDamage(levels, electricTree, 1);
 			}
 			else
 			{
-				APawn* playerPawn = Cast<APawn>(ElectricTargets[i]);
+				APawn* playerPawn = Cast<APawn>(layerActors[i]);
 				if (playerPawn != nullptr && IsValid(playerPawn))
 				{
 					UStatsManager* statsManager = Cast<UStatsManager>(playerPawn->GetComponentByClass(UStatsManager::StaticClass()));
@@ -94,7 +94,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 				}
 			}
 		}
-	}*/
+	}
 
 	//layerActors.Empty();
 	electricTree->DamageAllObjectsInTree(levels);
@@ -123,14 +123,14 @@ void UAttackManager::RadioactiveAttack(FAttackLevels levels)
 		{
 			FActorSpawnParameters spawnParams;
 			ARadiationSplashBase* splash = GetWorld()->SpawnActor<ARadiationSplashBase>(RadioactiveActor, hit.ImpactPoint, FRotator(0), spawnParams);
-			splash->SetShockValue(levels.electricity * 2);
+			splash->SetShockValue(levels.electricity);
 			//UE_LOG(LogTemp, Warning, TEXT("ACTOR SPAWNED"));
 		}
 		else
 		{
 			FActorSpawnParameters spawnParams;
 			ARadiationSplashBase* splash = GetWorld()->SpawnActor<ARadiationSplashBase>(RadioactiveActor, owner->GetActorLocation() + dir, FRotator(0), spawnParams);
-			splash->SetShockValue(levels.electricity * 2);
+			splash->SetShockValue(levels.electricity);
 			//UE_LOG(LogTemp, Warning, TEXT("ACTOR SPAWNED"));
 		}
 	}

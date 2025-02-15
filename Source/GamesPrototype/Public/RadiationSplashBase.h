@@ -43,6 +43,8 @@ protected:
 	void OnExitRange(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 						  int32 OtherBodyIndex);
 
+	void ApplyShock();
+
 	TArray<APawn*> Pawns;
 	float CurrentDeathTime = 0.0f;
 	float CurrentTickTime = 0.0f;
