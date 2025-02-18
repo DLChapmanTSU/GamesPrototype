@@ -98,3 +98,17 @@ void UStatsManager::AddRadiation(int radiation)
 		CurrentRadiation = MaxRadiation;
 }
 
+void UStatsManager::HealHealth(int health)
+{
+	CurrentHealth += health;
+	if (CurrentHealth > MaxHealth)
+		CurrentHealth = MaxHealth;
+}
+
+void UStatsManager::HealRadiation(int radiation)
+{
+	CurrentRadiation -= radiation;
+	if (CurrentRadiation < 0)
+		CurrentRadiation = 0;
+}
+
