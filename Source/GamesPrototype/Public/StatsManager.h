@@ -57,4 +57,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 		void AddRadiation(int radiation);
+	
+	UFUNCTION(BlueprintCallable)
+		void HealHealth(int health);
+
+	UFUNCTION(BlueprintCallable)
+		void HealRadiation(int radiation);
 };
