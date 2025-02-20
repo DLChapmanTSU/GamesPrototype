@@ -73,7 +73,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 	{
 		if (layerActors[i] != nullptr)
 		{
-			FRotator Rotation(i*1.0f, 0.0f, 0.0f);
+			FRotator Rotation(i*0.1f, i*1.0f, i*0.1f);
 			AConductiveWall* wall = Cast<AConductiveWall>(layerActors[i]);
 			if (wall != nullptr && IsValid(wall))
 			{
