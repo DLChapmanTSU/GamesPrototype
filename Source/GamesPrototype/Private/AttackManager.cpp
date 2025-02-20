@@ -30,8 +30,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 {
 	UE_LOG(LogTemp, Warning, TEXT("I AM THE GLORIOUS TAZER ATTACK"));
 	FActorSpawnParameters spawnParams;
-	GetWorld()->SpawnActor<AActor>(TazerAttackActor, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.0f), GetOwner()->GetActorRotation(), spawnParams);
-	//-------- Replaced for Time being
+	
 	 UElectricTree* electricTree = NewObject<UElectricTree>();
 	for (int i = 0; i < ElectricTargets.Num(); i++)
 	{
@@ -74,13 +73,17 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 	{
 		if (layerActors[i] != nullptr)
 		{
+			FRotator Rotation(i*1.0f, 0.0f, 0.0f);
 			AConductiveWall* wall = Cast<AConductiveWall>(layerActors[i]);
 			if (wall != nullptr && IsValid(wall))
 			{
+				
 				wall->ElectricDamage(levels, electricTree, 1);
+				GetWorld()->SpawnActor<AActor>(TazerAttackActor, wall ->GetActorLocation() + (wall ->GetActorForwardVector() * 100.0f), Rotation , spawnParams);
 			}
 			else
 			{
+				GetWorld()->SpawnActor<AActor>(TazerAttackActor, wall ->GetActorLocation() + (wall ->GetActorForwardVector() * 100.0f), Rotation , spawnParams);
 				APawn* playerPawn = Cast<APawn>(layerActors[i]);
 				if (playerPawn != nullptr && IsValid(playerPawn))
 				{
@@ -88,8 +91,8 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 
 					if (statsManager != nullptr && IsValid(statsManager))
 					{
-						//statsManager->DealDamage(levels.electricity * 2);
-						//statsManager->AddRadiation(levels.radiation);
+						statsManager->DealDamage(levels.electricity * 2);
+						statsManager->AddRadiation(levels.radiation);
 					}
 				}
 			}
