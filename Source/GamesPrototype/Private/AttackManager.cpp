@@ -83,7 +83,6 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 			}
 			else
 			{
-				GetWorld()->SpawnActor<AActor>(TazerAttackActor, wall ->GetActorLocation() + (wall ->GetActorForwardVector() * 100.0f), Rotation , spawnParams);
 				APawn* playerPawn = Cast<APawn>(layerActors[i]);
 				if (playerPawn != nullptr && IsValid(playerPawn))
 				{
@@ -93,6 +92,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 					{
 						statsManager->DealDamage(levels.electricity * 2);
 						statsManager->AddRadiation(levels.radiation);
+						GetWorld()->SpawnActor<AActor>(TazerAttackActor, playerPawn ->GetActorLocation() + (playerPawn ->GetActorForwardVector() * 100.0f), Rotation , spawnParams);
 					}
 				}
 			}
