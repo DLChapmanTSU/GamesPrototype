@@ -108,7 +108,14 @@ void UAttackManager::RadioactiveAttack(FAttackLevels levels)
 	AActor* owner = Cast<AActor>(GetOwner());
 	if (owner && IsValid(RadioactiveActor))
 	{
-		const FName TraceTag("RadioTag");
+		FActorSpawnParameters spawnParams;
+		ARadiationBounce* splash = GetWorld()->SpawnActor<ARadiationBounce>(RadioactiveActor, owner->GetActorLocation(), owner->GetActorRotation(), spawnParams);
+		splash->SetShockPower(levels.electricity);
+		splash->SetNumberOfBounces(levels.radiation);
+		splash->SetPlayerOwner(GetOwner());
+		splash->CalculateNextBounceTarget();
+		
+		/*const FName TraceTag("RadioTag");
 
 		GetWorld()->DebugDrawTraceTag = TraceTag;
 		
@@ -125,17 +132,21 @@ void UAttackManager::RadioactiveAttack(FAttackLevels levels)
 		if (hit.IsValidBlockingHit() && IsValid(hit.GetActor()))
 		{
 			FActorSpawnParameters spawnParams;
-			ARadiationSplashBase* splash = GetWorld()->SpawnActor<ARadiationSplashBase>(RadioactiveActor, hit.ImpactPoint, FRotator(0), spawnParams);
-			splash->SetShockValue(levels.electricity);
+			ARadiationBounce* splash = GetWorld()->SpawnActor<ARadiationBounce>(RadioactiveActor, hit.ImpactPoint, FRotator(0), spawnParams);
+			splash->SetShockPower(levels.electricity);
+			splash->SetNumberOfBounces(levels.radiation);
+			splash->CalculateNextBounceTarget();
 			//UE_LOG(LogTemp, Warning, TEXT("ACTOR SPAWNED"));
 		}
 		else
 		{
 			FActorSpawnParameters spawnParams;
-			ARadiationSplashBase* splash = GetWorld()->SpawnActor<ARadiationSplashBase>(RadioactiveActor, owner->GetActorLocation() + dir, FRotator(0), spawnParams);
-			splash->SetShockValue(levels.electricity);
+			ARadiationBounce* splash = GetWorld()->SpawnActor<ARadiationBounce>(RadioactiveActor, owner->GetActorLocation() + dir, FRotator(0), spawnParams);
+			splash->SetShockPower(levels.electricity);
+			splash->SetNumberOfBounces(levels.radiation);
+			splash->CalculateNextBounceTarget();
 			//UE_LOG(LogTemp, Warning, TEXT("ACTOR SPAWNED"));
-		}
+		}*/
 	}
 }
 
