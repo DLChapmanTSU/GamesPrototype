@@ -7,6 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "Components/BoxComponent.h"
 #include "Tazerpoint.h"
+#include "RadiationBounce.h"
 #include "AttackManager.generated.h"
 
 USTRUCT()
@@ -48,7 +49,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
 		TSubclassOf<AActor> TazerAttackActor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
-		TSubclassOf<ARadiationSplashBase>	RadioactiveActor;
+		TSubclassOf<ARadiationBounce>	RadioactiveActor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
 		float NormalAttackTimer = 0.5f;
 
