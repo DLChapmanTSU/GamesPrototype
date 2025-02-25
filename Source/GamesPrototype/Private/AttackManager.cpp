@@ -60,8 +60,8 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 						statsManager->DealDamage(levels.electricity * 2);
 						statsManager->AddRadiation(levels.radiation);
 					}*/
-
-					electricTree->AddActorAtLayer(ElectricTargets[i], 0);
+					if (playerPawn->GetUniqueID() != GetOwner()->GetUniqueID())
+						electricTree->AddActorAtLayer(ElectricTargets[i], 0);
 				}
 			}
 		} 
