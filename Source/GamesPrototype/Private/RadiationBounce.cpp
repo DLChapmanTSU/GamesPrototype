@@ -34,6 +34,7 @@ void ARadiationBounce::Tick(float DeltaTime)
 		FActorSpawnParameters spawnParams;
 		ARadiationSplashBase* splash = GetWorld()->SpawnActor<ARadiationSplashBase>(RadioactiveActor, CurrentTargetLocation, FRotator(0), spawnParams);
 		splash->SetShockValue(ShockPower);
+		SetActorRotation(CurrentTargetRotation);
 		CalculateNextBounceTarget();
 	}
 
@@ -64,6 +65,7 @@ void ARadiationBounce::CalculateNextBounceTarget()
 	FVector end = GetActorLocation() + dir;
 	FCollisionQueryParams queryParams;
 	queryParams.TraceTag = TraceTag;
+	queryParams.AddIgnoredActor(PlayerOwner);
 
 	GetWorld()->LineTraceSingleByChannel(hit, start, end, ECollisionChannel::ECC_WorldStatic, queryParams);
 	if (hit.IsValidBlockingHit() && IsValid(hit.GetActor()))
@@ -84,5 +86,10 @@ void ARadiationBounce::CalculateNextBounceTarget()
 void ARadiationBounce::SetShockPower(int NewShockPower)
 {
 	ShockPower = NewShockPower;
+}
+
+void ARadiationBounce::SetPlayerOwner(AActor* owner)
+{
+	PlayerOwner = owner;
 }
 

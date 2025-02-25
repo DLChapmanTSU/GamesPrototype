@@ -34,6 +34,7 @@ protected:
 	FVector CurrentTargetLocation;
 	FRotator CurrentTargetRotation;
 	int ShockPower = 0;
+	AActor* PlayerOwner;
 
 public:
 	// Called every frame
@@ -41,4 +42,5 @@ public:
 	void SetNumberOfBounces(int NewNumberOfBounces);
 	void CalculateNextBounceTarget();
 	void SetShockPower(int NewShockPower);
+	void SetPlayerOwner(AActor* owner);
 };
