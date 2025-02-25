@@ -35,6 +35,8 @@ protected:
 
 	float CurrentRadiationTickTime = 0.0f;
 
+	int ArmourValue = 0;
+
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
@@ -63,4 +65,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void HealRadiation(int radiation);
+
+	UFUNCTION(BlueprintCallable)
+		void SetArmourBuff();
+
+	UFUNCTION(BlueprintCallable)
+		int GetArmourValue();
 };
