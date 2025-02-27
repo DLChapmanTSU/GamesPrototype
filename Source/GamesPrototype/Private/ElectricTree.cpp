@@ -54,17 +54,20 @@ void UElectricTree::DamageAllObjectsInTree(FAttackLevels levels)
 	{
 		for (int j = 0; j < VisitedActors[i].Num(); j++)
 		{
-			APawn* pawn = Cast<APawn>(VisitedActors[i][j]);
-			if (pawn != nullptr && IsValid(pawn))
+			if (VisitedActors[i][j] != nullptr && IsValid(VisitedActors[i][j]) && VisitedActors.IsValidIndex(i) && VisitedActors[i].IsValidIndex(j))
 			{
-				if (pawn->GetUniqueID() != levels.owner)
+				APawn* pawn = Cast<APawn>(VisitedActors[i][j]);
+				if (pawn != nullptr && IsValid(pawn))
 				{
-					UStatsManager* manager = Cast<UStatsManager>(pawn->GetComponentByClass(UStatsManager::StaticClass()));
-
-					if (manager != nullptr && IsValid(manager))
+					if (pawn->GetUniqueID() != levels.owner)
 					{
-						manager->DealDamage(levels.electricity * 2);
-						manager->AddRadiation(levels.radiation);
+						UStatsManager* manager = Cast<UStatsManager>(pawn->GetComponentByClass(UStatsManager::StaticClass()));
+
+						if (manager != nullptr && IsValid(manager))
+						{
+							manager->DealDamage(levels.electricity * 2);
+							manager->AddRadiation(levels.radiation);
+						}
 					}
 				}
 			}

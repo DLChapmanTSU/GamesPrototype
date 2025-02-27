@@ -34,7 +34,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 	 UElectricTree* electricTree = NewObject<UElectricTree>();
 	for (int i = 0; i < ElectricTargets.Num(); i++)
 	{
-		if (ElectricTargets[i] != nullptr)
+		if (ElectricTargets.IsValidIndex(i) && ElectricTargets[i] != nullptr && IsValid(ElectricTargets[i]))
 		{
 			if (electricTree->IsActorVisited(ElectricTargets[i]))
 				continue;
@@ -71,7 +71,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 	
 	for (int i = 0; i < layerActors.Num(); i++)
 	{
-		if (layerActors[i] != nullptr)
+		if (layerActors.IsValidIndex(i) && layerActors[i] != nullptr && IsValid(layerActors[i]))
 		{
 			FRotator Rotation(i*0.1f, i*1.0f, i*0.1f);
 			AConductiveWall* wall = Cast<AConductiveWall>(layerActors[i]);
@@ -242,7 +242,10 @@ void UAttackManager::StartAttack()
 		break;
 	}
 
-	Resources.Empty();
+	if (HasRetainBuff == true)
+		HasRetainBuff = false;
+	else
+		Resources.Empty();
 }
 
 void UAttackManager::BasicAttack()
@@ -264,4 +267,9 @@ void UAttackManager::SetElectricTargets(TArray<AActor*> targets)
 TArray<int> UAttackManager::GetResources()
 {
 	return Resources;
+}
+
+void UAttackManager::SetRetainBuff()
+{
+	HasRetainBuff = true;
 }
