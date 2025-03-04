@@ -181,6 +181,7 @@ void UAttackManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	CurrentNormalAttackTimer += DeltaTime;
+	CurrentSpeialAttackTimer += DeltaTime;
 
 	// ...
 }
@@ -200,6 +201,11 @@ void UAttackManager::StartAttack()
 {
 	if (Resources.Num() == 0)
 		return;
+
+	if (CurrentSpeialAttackTimer < SpecialAttackTimer)
+		return;
+
+	CurrentSpeialAttackTimer = 0.0f;
 
 	FAttackLevels levels;
 	levels.electricity = 0;
@@ -272,4 +278,9 @@ TArray<int> UAttackManager::GetResources()
 void UAttackManager::SetRetainBuff()
 {
 	HasRetainBuff = true;
+}
+
+bool UAttackManager::GetRetainBuff()
+{
+	return HasRetainBuff;
 }
