@@ -79,7 +79,17 @@ int UStatsManager::GetMaxRadiation()
 
 void UStatsManager::DealDamage(int damage)
 {
-	CurrentHealth -= damage;
+	int finalDamage = damage;
+	if (ArmourValue > 0)
+	{
+		finalDamage = (damage / 3) * 2;
+		if (finalDamage == 0)
+			ArmourValue -= 1;
+		else
+			ArmourValue -= finalDamage;
+	}
+	
+	CurrentHealth -= finalDamage;
 	if (CurrentRadiation > 0)
 	{
 		CurrentHealth -= CurrentRadiation * 2;
@@ -110,5 +120,15 @@ void UStatsManager::HealRadiation(int radiation)
 	CurrentRadiation -= radiation;
 	if (CurrentRadiation < 0)
 		CurrentRadiation = 0;
+}
+
+void UStatsManager::SetArmourBuff()
+{
+	ArmourValue = 10;
+}
+
+int UStatsManager::GetArmourValue()
+{
+	return ArmourValue;
 }
 

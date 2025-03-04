@@ -53,7 +53,7 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 
 	for (int i = 0; i < ElectricTargets.Num(); i++)
 	{
-		if (ElectricTargets[i] != nullptr)
+		if (ElectricTargets.IsValidIndex(i) && ElectricTargets[i] != nullptr && IsValid(ElectricTargets[i]))
 		{
 			if (tree->IsActorVisited(ElectricTargets[i]))
 				continue;
@@ -92,7 +92,7 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 	
 	for (int i = 0; i < layerActors.Num(); i++)
 	{
-		if (layerActors[i] != nullptr)
+		if (layerActors.IsValidIndex(i) && layerActors[i] != nullptr && IsValid(layerActors[i]))
 		{
 			if (layerActors[i]->GetUniqueID() == levels.owner)
 				continue;
