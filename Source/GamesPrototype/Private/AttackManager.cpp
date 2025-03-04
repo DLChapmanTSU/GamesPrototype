@@ -67,6 +67,8 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 		} 
 	}
 
+	GetWorld()->SpawnActor<AActor>(TazerAttackActor, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.0f), FRotator(0) , spawnParams);
+
 	TArray<AActor*> layerActors = electricTree->GetVisitedActors(0);
 	
 	for (int i = 0; i < layerActors.Num(); i++)
