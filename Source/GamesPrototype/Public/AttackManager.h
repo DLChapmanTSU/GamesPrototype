@@ -52,8 +52,11 @@ protected:
 		TSubclassOf<ARadiationBounce>	RadioactiveActor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
 		float NormalAttackTimer = 0.5f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
+		float SpecialAttackTimer = 0.5f;
 
 	float CurrentNormalAttackTimer = 0.0f;
+	float CurrentSpeialAttackTimer = 0.0f;
 
 	bool HasRetainBuff = false;
 
@@ -77,4 +80,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SetRetainBuff();
+
+	UFUNCTION(BlueprintCallable)
+		bool GetRetainBuff();
 };
