@@ -5,6 +5,7 @@
 
 #include "ConductiveWall.h"
 #include "StatsManager.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values for this component's properties
 UAttackManager::UAttackManager()
@@ -28,27 +29,47 @@ void UAttackManager::BeginPlay()
 
 void UAttackManager::ElectricAttack(FAttackLevels levels)
 {
+	//Trace stuff
+	TArray<AActor*> FoundActors;
+	TArray<AActor*> IgnoredActors;
+	IgnoredActors.Add(GetOwner());
+	FVector StartLocation = GetOwner()->GetActorLocation();
+	FVector EndLocation = GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 500.0f);
+	float radius = levels.electricity * 50.0f;
+	TArray<FHitResult> Hit;
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
+	ObjectTypesArray.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
+	ObjectTypesArray.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+	bool bHasHit = UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartLocation, EndLocation, radius, ObjectTypesArray, false, IgnoredActors, EDrawDebugTrace::ForDuration, Hit, true);
+
+	if (!bHasHit)
+		return;
+
+	
+	
 	UE_LOG(LogTemp, Warning, TEXT("I AM THE GLORIOUS TAZER ATTACK"));
 	FActorSpawnParameters spawnParams;
 	
 	 UElectricTree* electricTree = NewObject<UElectricTree>();
-	for (int i = 0; i < ElectricTargets.Num(); i++)
+	for (int i = 0; i < Hit.Num(); i++)
 	{
-		if (ElectricTargets.IsValidIndex(i) && ElectricTargets[i] != nullptr && IsValid(ElectricTargets[i]))
+		if (Hit.IsValidIndex(i) && Hit[i].GetActor() != nullptr && IsValid(Hit[i].GetActor()))
 		{
-			if (electricTree->IsActorVisited(ElectricTargets[i]))
+			AActor* hitActor = Hit[i].GetActor();
+			
+			if (electricTree->IsActorVisited(hitActor))
 				continue;
 			
-			AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
+			AConductiveWall* wall = Cast<AConductiveWall>(hitActor);
 			if (wall != nullptr && IsValid(wall))
 			{
 				UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
-				electricTree->AddActorAtLayer(ElectricTargets[i], 0);
+				electricTree->AddActorAtLayer(hitActor, 0);
 				//wall->ElectricDamage(levels, electricTree, 0);
 			}
 			else
 			{
-				APawn* playerPawn = Cast<APawn>(ElectricTargets[i]);
+				APawn* playerPawn = Cast<APawn>(hitActor);
 				if (playerPawn != nullptr && IsValid(playerPawn))
 				{
 					UE_LOG(LogTemp, Warning, TEXT("I AM A PLAYER! DEAL DAMAGE TO ME!"));
@@ -61,7 +82,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 						statsManager->AddRadiation(levels.radiation);
 					}*/
 					if (playerPawn->GetUniqueID() != GetOwner()->GetUniqueID())
-						electricTree->AddActorAtLayer(ElectricTargets[i], 0);
+						electricTree->AddActorAtLayer(hitActor, 0);
 				}
 			}
 		} 
