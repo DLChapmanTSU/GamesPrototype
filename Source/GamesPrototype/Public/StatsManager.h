@@ -71,4 +71,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		int GetArmourValue();
+
+	UFUNCTION(BlueprintCallable)
+		void ResetPlayer();
 };
