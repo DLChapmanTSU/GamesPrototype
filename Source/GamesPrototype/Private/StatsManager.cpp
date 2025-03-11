@@ -3,6 +3,8 @@
 
 #include "StatsManager.h"
 
+#include "AttackManager.h"
+
 
 // Sets default values for this component's properties
 UStatsManager::UStatsManager()
@@ -45,8 +47,8 @@ void UStatsManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 			CurrentHealth--;
 			CurrentRadiation--;
 
-			if (CurrentHealth <= 0)
-				GetOwner()->Destroy();
+			//if (CurrentHealth <= 0)
+			//	GetOwner()->SetHidden(true);
 		}
 
 		CurrentRadiationTickTime = 0.0f;
@@ -96,8 +98,11 @@ void UStatsManager::DealDamage(int damage)
 		CurrentRadiation = 0;
 	}
 	//UE_LOG(LogTemp, Warning, TEXT("OUCH!"));
-	if (CurrentHealth <= 0)
-		GetOwner()->Destroy();
+	//if (CurrentHealth <= 0)
+	//{
+		//GetOwner()->Destroy();
+	//	GetOwner()->SetHidden(true);
+	//}
 }
 
 void UStatsManager::AddRadiation(int radiation)
@@ -130,5 +135,25 @@ void UStatsManager::SetArmourBuff()
 int UStatsManager::GetArmourValue()
 {
 	return ArmourValue;
+}
+
+void UStatsManager::ResetPlayer()
+{
+	CurrentHealth = MaxHealth;
+	CurrentRadiation = 0;
+	CurrentRadiationTickTime = 0.0f;
+	if (GetOwner() != nullptr && IsValid(GetOwner()))
+	{
+		UActorComponent* attackComp = GetOwner()->GetComponentByClass(UAttackManager::StaticClass());
+
+		if (attackComp != nullptr && IsValid(attackComp))
+		{
+			UAttackManager* attackManager = Cast<UAttackManager>(attackComp);
+			if (attackManager != nullptr && IsValid(attackManager))
+			{
+				attackManager->ResetResources();
+			}
+		}
+	}
 }
 

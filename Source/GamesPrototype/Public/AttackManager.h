@@ -83,4 +83,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		bool GetRetainBuff();
+
+	void ResetResources();
 };

@@ -307,3 +307,12 @@ bool UAttackManager::GetRetainBuff()
 {
 	return HasRetainBuff;
 }
+
+void UAttackManager::ResetResources()
+{
+	CurrentNormalAttackTimer = 0.0f;
+	CurrentSpeialAttackTimer = 0.0f;
+	HasRetainBuff = false;
+	Resources.Empty();
+	ElectricTargets.Empty();
+}
