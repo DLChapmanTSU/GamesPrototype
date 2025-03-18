@@ -4,6 +4,8 @@
 #include "StatsManager.h"
 
 #include "AttackManager.h"
+#include "Components/ArrowComponent.h"
+#include "Components/SceneComponent.h"
 
 
 // Sets default values for this component's properties
@@ -98,11 +100,25 @@ void UStatsManager::DealDamage(int damage)
 		CurrentRadiation = 0;
 	}
 	//UE_LOG(LogTemp, Warning, TEXT("OUCH!"));
-	//if (CurrentHealth <= 0)
-	//{
-		//GetOwner()->Destroy();
-	//	GetOwner()->SetHidden(true);
-	//}
+	if (CurrentHealth <= 0)
+	{
+		TArray<UStaticMeshComponent*> comps;
+		GetOwner()->GetComponents<UStaticMeshComponent>(comps);
+
+		for (int i = 0; i < comps.Num(); i++)
+		{
+			comps[i]->SetVisibility(false);
+			comps[i]->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
+
+		TArray<UArrowComponent*> arrows;
+		GetOwner()->GetComponents<UArrowComponent>(arrows);
+
+		for (int i = 0; i < comps.Num(); i++)
+		{
+			arrows[i]->SetVisibility(false);
+		}
+	}
 }
 
 void UStatsManager::AddRadiation(int radiation)
@@ -153,6 +169,23 @@ void UStatsManager::ResetPlayer()
 			{
 				attackManager->ResetResources();
 			}
+		}
+
+		TArray<UStaticMeshComponent*> comps;
+		GetOwner()->GetComponents<UStaticMeshComponent>(comps);
+
+		for (int i = 0; i < comps.Num(); i++)
+		{
+			comps[i]->SetVisibility(true);
+			comps[i]->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		}
+
+		TArray<UArrowComponent*> arrows;
+		GetOwner()->GetComponents<UArrowComponent>(arrows);
+
+		for (int i = 0; i < comps.Num(); i++)
+		{
+			arrows[i]->SetVisibility(true);
 		}
 	}
 }
