@@ -42,13 +42,16 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 	ObjectTypesArray.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	bool bHasHit = UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartLocation, EndLocation, radius, ObjectTypesArray, false, IgnoredActors, EDrawDebugTrace::ForDuration, Hit, true);
 
+	FActorSpawnParameters spawnParams;
+	GetWorld()->SpawnActor<AActor>(TazerAttackActor, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 200.0f), FRotator(0) , spawnParams);
+
 	if (!bHasHit)
 		return;
 
 	
 	
 	UE_LOG(LogTemp, Warning, TEXT("I AM THE GLORIOUS TAZER ATTACK"));
-	FActorSpawnParameters spawnParams;
+	
 	
 	 UElectricTree* electricTree = NewObject<UElectricTree>();
 	for (int i = 0; i < Hit.Num(); i++)
@@ -87,8 +90,6 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 			}
 		} 
 	}
-
-	GetWorld()->SpawnActor<AActor>(TazerAttackActor, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.0f), FRotator(0) , spawnParams);
 
 	TArray<AActor*> layerActors = electricTree->GetVisitedActors(0);
 	
