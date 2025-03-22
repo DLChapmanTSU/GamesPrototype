@@ -35,12 +35,11 @@ protected:
 	FRotator CurrentTargetRotation;
 	int ShockPower = 0;
 	AActor* PlayerOwner;
+	float PoolRadius = 100.0f;
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void SetNumberOfBounces(int NewNumberOfBounces);
+	void InitialiseData(AActor* playerOwner, int bounces, int shockPower);
 	void CalculateNextBounceTarget();
-	void SetShockPower(int NewShockPower);
-	void SetPlayerOwner(AActor* owner);
 };

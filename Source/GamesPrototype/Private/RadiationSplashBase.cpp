@@ -201,8 +201,10 @@ void ARadiationSplashBase::Tick(float DeltaTime)
 		Destroy();
 }
 
-void ARadiationSplashBase::SetShockValue(int value)
+void ARadiationSplashBase::InitialiseData(int shock, float radius)
 {
-	ShockValue = value;
+	ShockValue = shock;
+	Sphere->SetSphereRadius(radius);
+	Mesh->SetWorldScale3D(FVector((radius / 100.0f) * 2.0f, (radius / 100.0f) * 2.0f, 0.05f));
 }
 

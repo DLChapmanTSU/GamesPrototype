@@ -134,9 +134,7 @@ void UAttackManager::RadioactiveAttack(FAttackLevels levels)
 	{
 		FActorSpawnParameters spawnParams;
 		ARadiationBounce* splash = GetWorld()->SpawnActor<ARadiationBounce>(RadioactiveActor, owner->GetActorLocation(), owner->GetActorRotation(), spawnParams);
-		splash->SetShockPower(levels.electricity);
-		splash->SetNumberOfBounces(levels.radiation);
-		splash->SetPlayerOwner(GetOwner());
+		splash->InitialiseData(GetOwner(), levels.radiation, levels.electricity);
 		splash->CalculateNextBounceTarget();
 		
 		/*const FName TraceTag("RadioTag");
