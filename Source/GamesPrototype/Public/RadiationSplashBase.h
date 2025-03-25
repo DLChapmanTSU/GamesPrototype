@@ -53,5 +53,5 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void SetShockValue(int value);
+	void InitialiseData(int shock, float radius);
 };

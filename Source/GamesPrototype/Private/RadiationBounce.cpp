@@ -33,7 +33,7 @@ void ARadiationBounce::Tick(float DeltaTime)
 	{
 		FActorSpawnParameters spawnParams;
 		ARadiationSplashBase* splash = GetWorld()->SpawnActor<ARadiationSplashBase>(RadioactiveActor, CurrentTargetLocation, FRotator(0), spawnParams);
-		splash->SetShockValue(ShockPower);
+		splash->InitialiseData(ShockPower, PoolRadius);
 		SetActorRotation(CurrentTargetRotation);
 		CalculateNextBounceTarget();
 	}
@@ -41,9 +41,12 @@ void ARadiationBounce::Tick(float DeltaTime)
 	SetActorLocation(GetActorLocation() + (GetActorForwardVector() * MovementSpeed * DeltaTime));
 }
 
-void ARadiationBounce::SetNumberOfBounces(int NewNumberOfBounces)
+void ARadiationBounce::InitialiseData(AActor* playerOwner, int bounces, int shockPower)
 {
-	NumberOfBounces = NewNumberOfBounces;
+	PlayerOwner = playerOwner;
+	ShockPower = shockPower;
+	NumberOfBounces = bounces;
+	PoolRadius = 100.0f * bounces;
 }
 
 void ARadiationBounce::CalculateNextBounceTarget()
@@ -81,15 +84,5 @@ void ARadiationBounce::CalculateNextBounceTarget()
 
 	CurrentBounces++;
 	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), CurrentTargetLocation));
-}
-
-void ARadiationBounce::SetShockPower(int NewShockPower)
-{
-	ShockPower = NewShockPower;
-}
-
-void ARadiationBounce::SetPlayerOwner(AActor* owner)
-{
-	PlayerOwner = owner;
 }
 
