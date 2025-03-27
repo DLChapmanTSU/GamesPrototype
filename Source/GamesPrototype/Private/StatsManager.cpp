@@ -111,13 +111,13 @@ void UStatsManager::DealDamage(int damage)
 			comps[i]->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 
-		TArray<UArrowComponent*> arrows;
+		/*TArray<UArrowComponent*> arrows;
 		GetOwner()->GetComponents<UArrowComponent>(arrows);
 
 		for (int i = 0; i < comps.Num(); i++)
 		{
 			arrows[i]->SetVisibility(false);
-		}
+		}*/
 	}
 }
 
@@ -180,13 +180,13 @@ void UStatsManager::ResetPlayer()
 			comps[i]->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		}
 
-		TArray<UArrowComponent*> arrows;
+		/*TArray<UArrowComponent*> arrows;
 		GetOwner()->GetComponents<UArrowComponent>(arrows);
 
 		for (int i = 0; i < comps.Num(); i++)
 		{
 			arrows[i]->SetVisibility(true);
-		}
+		}*/
 	}
 }
 
