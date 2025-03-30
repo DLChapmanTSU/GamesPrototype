@@ -108,7 +108,7 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 void AConductiveWall::ActorEnterRange(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor != nullptr)
+	/*if (OtherActor != nullptr)
 	{
 		APawn* playerPawn = Cast<APawn>(OtherActor);
 		if (playerPawn != nullptr && IsValid(playerPawn) && !OtherComp->ComponentHasTag("CollisionIgnore"))
@@ -123,13 +123,13 @@ void AConductiveWall::ActorEnterRange(UPrimitiveComponent* OverlappedComp, AActo
 				ElectricTargets.AddUnique(OtherActor);
 			}
 		}
-	}
+	}*/
 }
 
 void AConductiveWall::ActorExitRange(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (OtherActor != nullptr)
+	/*if (OtherActor != nullptr)
 	{
 		APawn* playerPawn = Cast<APawn>(OtherActor);
 		if (playerPawn != nullptr && IsValid(playerPawn) && !OtherComp->ComponentHasTag("CollisionIgnore"))
@@ -144,6 +144,6 @@ void AConductiveWall::ActorExitRange(UPrimitiveComponent* OverlappedComp, AActor
 				ElectricTargets.Remove(OtherActor);
 			}
 		}
-	}
+	}*/
 }
 
