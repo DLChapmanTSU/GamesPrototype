@@ -103,7 +103,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 			{
 				
 				wall->ElectricDamage(levels, electricTree, 1);
-				GetWorld()->SpawnActor<AActor>(TazerAttackActor, wall ->GetActorLocation() + (wall ->GetActorForwardVector() * 100.0f), Rotation , spawnParams);
+				//GetWorld()->SpawnActor<AActor>(TazerAttackActor, wall ->GetActorLocation() + (wall ->GetActorForwardVector() * 100.0f), Rotation , spawnParams);
 			}
 			else
 			{
@@ -114,9 +114,9 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 
 					if (statsManager != nullptr && IsValid(statsManager))
 					{
-						statsManager->DealDamage(levels.electricity * 2);
-						statsManager->AddRadiation(levels.radiation);
-						GetWorld()->SpawnActor<AActor>(TazerAttackActor, playerPawn ->GetActorLocation() + (playerPawn ->GetActorForwardVector() * 100.0f), Rotation , spawnParams);
+						//statsManager->DealDamage(levels.electricity * 2);
+						//statsManager->AddRadiation(levels.radiation);
+						//GetWorld()->SpawnActor<AActor>(TazerAttackActor, playerPawn ->GetActorLocation() + (playerPawn ->GetActorForwardVector() * 100.0f), Rotation , spawnParams);
 					}
 				}
 			}
@@ -124,7 +124,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 	}
 
 	//layerActors.Empty();
-	electricTree->DamageAllObjectsInTree(levels);
+	electricTree->DamageAllObjectsInTree(levels, TazerAttackActor);
 }
 
 void UAttackManager::RadioactiveAttack(FAttackLevels levels)
