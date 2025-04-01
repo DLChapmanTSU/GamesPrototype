@@ -48,7 +48,7 @@ TArray<AActor*> UElectricTree::GetVisitedActors(int Layer)
 	return VisitedActors[Layer];
 }
 
-void UElectricTree::DamageAllObjectsInTree(FAttackLevels levels)
+void UElectricTree::DamageAllObjectsInTree(FAttackLevels levels, TSubclassOf<AActor> effectActor)
 {
 	for (int i = 0; i < VisitedActors.Num(); i++)
 	{
@@ -70,6 +70,10 @@ void UElectricTree::DamageAllObjectsInTree(FAttackLevels levels)
 						}
 					}
 				}
+
+				FRotator Rotation(i*0.1f, i*1.0f, i*0.1f);
+				FActorSpawnParameters spawnParams;
+				GetWorld()->SpawnActor<AActor>(effectActor, VisitedActors[i][j]->GetActorLocation(), Rotation , spawnParams);
 			}
 		}
 	}
