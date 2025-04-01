@@ -21,5 +21,5 @@ public:
 	bool IsActorVisited(AActor* Actor);
 	void AddActorAtLayer(AActor* Actor, int Layer);
 	TArray<AActor*> GetVisitedActors(int Layer);
-	void DamageAllObjectsInTree(FAttackLevels levels, TSubclassOf<AActor> effectActor);
+	void DamageAllObjectsInTree(FAttackLevels levels);
 };

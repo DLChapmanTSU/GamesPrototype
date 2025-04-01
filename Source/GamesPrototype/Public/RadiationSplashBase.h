@@ -35,7 +35,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true), Category="RadiationSplash")
 		float TimePerTick;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="RadiationSplash")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true), Category="RadiationSplash")
 		TSubclassOf<AActor> TazerAttackActor;
 
 	UFUNCTION()

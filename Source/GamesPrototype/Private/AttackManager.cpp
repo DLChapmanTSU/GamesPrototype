@@ -5,6 +5,7 @@
 
 #include "ConductiveWall.h"
 #include "StatsManager.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values for this component's properties
@@ -62,15 +63,18 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 			
 			if (electricTree->IsActorVisited(hitActor))
 				continue;
-			
-			AConductiveWall* wall = Cast<AConductiveWall>(hitActor);
-			if (wall != nullptr && IsValid(wall))
+
+			if(UKismetMathLibrary::ClassIsChildOf(hitActor->GetClass(),AConductiveWall::StaticClass()))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
-				electricTree->AddActorAtLayer(hitActor, 0);
-				//wall->ElectricDamage(levels, electricTree, 0);
+				AConductiveWall* wall = Cast<AConductiveWall>(hitActor);
+				if (wall != nullptr && IsValid(wall))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
+					electricTree->AddActorAtLayer(hitActor, 0);
+					//wall->ElectricDamage(levels, electricTree, 0);
+				}
 			}
-			else
+			else if (UKismetMathLibrary::ClassIsChildOf(hitActor->GetClass(),APawn::StaticClass()))
 			{
 				APawn* playerPawn = Cast<APawn>(hitActor);
 				if (playerPawn != nullptr && IsValid(playerPawn))
@@ -124,7 +128,7 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 	}
 
 	//layerActors.Empty();
-	electricTree->DamageAllObjectsInTree(levels, TazerAttackActor);
+	electricTree->DamageAllObjectsInTree(levels);
 }
 
 void UAttackManager::RadioactiveAttack(FAttackLevels levels)

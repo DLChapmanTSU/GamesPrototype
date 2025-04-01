@@ -4,6 +4,7 @@
 #include "ConductiveWall.h"
 
 #include "StatsManager.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 // Sets default values
@@ -51,8 +52,13 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 {
 	UE_LOG(LogTemp, Warning, TEXT("Wall Shocked"));
 
+	FRotator Rotation(layer*0.2f, layer*1.0f, layer*0.1f);
+	FActorSpawnParameters spawnParams;
+	GetWorld()->SpawnActor<AActor>(TazerAttackActor, GetActorLocation(), Rotation , spawnParams);
+
 	for (int i = 0; i < ElectricTargets.Num(); i++)
 	{
+		
 		if (ElectricTargets.IsValidIndex(i) && ElectricTargets[i] != nullptr && IsValid(ElectricTargets[i]))
 		{
 			if (tree->IsActorVisited(ElectricTargets[i]))
@@ -60,14 +66,18 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 			
 			if (ElectricTargets[i]->GetUniqueID() == levels.owner)
 				continue;
-			AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
-			if (wall != nullptr && IsValid(wall))
+
+			if(UKismetMathLibrary::ClassIsChildOf(ElectricTargets[i]->GetClass(), GetClass()))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
-				tree->AddActorAtLayer(ElectricTargets[i], layer);
-				//wall->ElectricDamage(levels, tree, layer);
+				AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
+				if (wall != nullptr && IsValid(wall))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("I AM A WALL! OUCH!"));
+					tree->AddActorAtLayer(ElectricTargets[i], layer);
+					//wall->ElectricDamage(levels, tree, layer);
+				}
 			}
-			else
+			else if (UKismetMathLibrary::ClassIsChildOf(ElectricTargets[i]->GetClass(), APawn::StaticClass()))
 			{
 				APawn* playerPawn = Cast<APawn>(ElectricTargets[i]);
 				if (playerPawn != nullptr && IsValid(playerPawn))

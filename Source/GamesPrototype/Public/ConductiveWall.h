@@ -26,6 +26,9 @@ protected:
 
 	TArray<AActor*> ElectricTargets;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
+		TSubclassOf<AActor> TazerAttackActor;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

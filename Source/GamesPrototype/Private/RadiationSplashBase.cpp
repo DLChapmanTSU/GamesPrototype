@@ -148,7 +148,7 @@ void ARadiationSplashBase::ApplyShock()
 	}
 
 	//layerActors.Empty();
-	electricTree->DamageAllObjectsInTree(levels, TazerAttackActor);
+	electricTree->DamageAllObjectsInTree(levels);
 	
 	/*if (Pawns.Num() > 0)
 	{
