@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GAMESPROTOTYPE_API UGameStatusManager : public UObject
 {
 	GENERATED_BODY()
