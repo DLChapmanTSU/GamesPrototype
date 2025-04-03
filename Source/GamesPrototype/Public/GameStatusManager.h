@@ -14,12 +14,17 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GAMESPROTOTYPE_API UGameStatusManager : public UObject
 {
 	GENERATED_BODY()
+	
 protected:
 	UStatsManager* PlayerOne;
 	UStatsManager* PlayerTwo;
 public:
-	void SetPlayerOneStats(UStatsManager* manager);
-	void SetPlayerTwoStats(UStatsManager* manager);
-	bool GetHasPlayerOneWon();
-	bool GetHasPlayerTwoWon();
+	UFUNCTION(BlueprintCallable)
+		void SetPlayerOneStats(UStatsManager* manager);
+	UFUNCTION(BlueprintCallable)
+		void SetPlayerTwoStats(UStatsManager* manager);
+	UFUNCTION(BlueprintCallable)
+		bool GetHasPlayerOneWon();
+	UFUNCTION(BlueprintCallable)
+		bool GetHasPlayerTwoWon();
 };
