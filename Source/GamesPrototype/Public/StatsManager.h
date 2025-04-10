@@ -37,6 +37,17 @@ protected:
 
 	int ArmourValue = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* ArmourSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* RadiationTickSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* HealSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* HurtSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* DeathSound;
+
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,

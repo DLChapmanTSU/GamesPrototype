@@ -6,6 +6,7 @@
 #include "AttackManager.h"
 #include "Components/ArrowComponent.h"
 #include "Components/SceneComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values for this component's properties
@@ -54,6 +55,7 @@ void UStatsManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 		}
 
 		CurrentRadiationTickTime = 0.0f;
+		UGameplayStatics::PlaySound2D(GetWorld(), RadiationTickSound);
 	}
 
 	
@@ -102,6 +104,7 @@ void UStatsManager::DealDamage(int damage)
 	//UE_LOG(LogTemp, Warning, TEXT("OUCH!"));
 	if (CurrentHealth <= 0)
 	{
+		UGameplayStatics::PlaySound2D(GetWorld(), DeathSound);
 		TArray<UStaticMeshComponent*> comps;
 		GetOwner()->GetComponents<UStaticMeshComponent>(comps);
 
@@ -119,6 +122,10 @@ void UStatsManager::DealDamage(int damage)
 			arrows[i]->SetVisibility(false);
 		}*/
 	}
+	else
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), HurtSound);
+	}
 }
 
 void UStatsManager::AddRadiation(int radiation)
@@ -132,6 +139,7 @@ void UStatsManager::AddRadiation(int radiation)
 void UStatsManager::HealHealth(int health)
 {
 	CurrentHealth += health;
+	UGameplayStatics::PlaySound2D(GetWorld(), HealSound);
 	if (CurrentHealth > MaxHealth)
 		CurrentHealth = MaxHealth;
 }
@@ -139,6 +147,7 @@ void UStatsManager::HealHealth(int health)
 void UStatsManager::HealRadiation(int radiation)
 {
 	CurrentRadiation -= radiation;
+	UGameplayStatics::PlaySound2D(GetWorld(), HealSound);
 	if (CurrentRadiation < 0)
 		CurrentRadiation = 0;
 }
@@ -146,6 +155,7 @@ void UStatsManager::HealRadiation(int radiation)
 void UStatsManager::SetArmourBuff()
 {
 	ArmourValue = 10;
+	UGameplayStatics::PlaySound2D(GetWorld(), ArmourSound);
 }
 
 int UStatsManager::GetArmourValue()
