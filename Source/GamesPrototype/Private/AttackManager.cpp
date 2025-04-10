@@ -5,6 +5,7 @@
 
 #include "ConductiveWall.h"
 #include "StatsManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -45,6 +46,8 @@ void UAttackManager::ElectricAttack(FAttackLevels levels)
 
 	FActorSpawnParameters spawnParams;
 	GetWorld()->SpawnActor<AActor>(TazerAttackActor, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 200.0f), FRotator(0) , spawnParams);
+
+	UGameplayStatics::PlaySound2D(GetWorld(), ElectricAttackSound);
 
 	if (!bHasHit)
 		return;
@@ -140,6 +143,7 @@ void UAttackManager::RadioactiveAttack(FAttackLevels levels)
 		ARadiationBounce* splash = GetWorld()->SpawnActor<ARadiationBounce>(RadioactiveActor, owner->GetActorLocation(), owner->GetActorRotation(), spawnParams);
 		splash->InitialiseData(GetOwner(), levels.radiation, levels.electricity);
 		splash->CalculateNextBounceTarget();
+		UGameplayStatics::PlaySound2D(GetWorld(), RadiationAttackSound);
 		
 		/*const FName TraceTag("RadioTag");
 
@@ -217,6 +221,7 @@ void UAttackManager::AddResource(int type)
 	if (type < 0 || type >= 3)
 		return;
 
+	UGameplayStatics::PlaySound2D(GetWorld(), PickupSound);
 	Resources.Add(type);
 	
 	if (Resources.Num() > 5)
@@ -289,6 +294,7 @@ void UAttackManager::BasicAttack()
 	
 	FActorSpawnParameters spawnParams;
 	GetWorld()->SpawnActor<AActor>(NormalAttackActor, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.0f), GetOwner()->GetActorRotation(), spawnParams);
+	UGameplayStatics::PlaySound2D(GetWorld(), BasicAttackSound);
 }
 
 void UAttackManager::SetElectricTargets(TArray<AActor*> targets)
@@ -304,6 +310,7 @@ TArray<int> UAttackManager::GetResources()
 void UAttackManager::SetRetainBuff()
 {
 	HasRetainBuff = true;
+	UGameplayStatics::PlaySound2D(GetWorld(), PickupSound);
 }
 
 bool UAttackManager::GetRetainBuff()

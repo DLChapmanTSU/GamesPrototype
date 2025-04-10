@@ -28,6 +28,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="RadiationBounce")
 		float MovementSpeed = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="RadiationBounce")
+		USoundBase* SplashSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="RadiationBounce")
+		USoundBase* ElectricSound;
 	
 	int NumberOfBounces = 0;
 	int CurrentBounces = 0;
