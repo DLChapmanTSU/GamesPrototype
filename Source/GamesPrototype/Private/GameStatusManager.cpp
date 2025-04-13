@@ -32,3 +32,8 @@ bool UGameStatusManager::GetHasPlayerTwoWon()
 	}
 	return false;
 }
+
+bool UGameStatusManager::HasValidStats()
+{
+	return PlayerOne != nullptr && IsValid(PlayerOne) && PlayerTwo != nullptr && IsValid(PlayerTwo);
+}

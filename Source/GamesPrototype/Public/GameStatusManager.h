@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), BlueprintType )
 class GAMESPROTOTYPE_API UGameStatusManager : public UObject
 {
 	GENERATED_BODY()
@@ -27,4 +27,6 @@ public:
 		bool GetHasPlayerOneWon();
 	UFUNCTION(BlueprintCallable)
 		bool GetHasPlayerTwoWon();
+	UFUNCTION(BlueprintCallable)
+		bool HasValidStats();
 };
