@@ -18,6 +18,9 @@ protected:
 	TMap<TSubclassOf<AActor>, TArray<AActor*>> ObjectPool;
 
 public:
-	void AddToPool(TSubclassOf<AActor> ObjectType);
-	AActor* FetchFromPool(TSubclassOf<AActor> ObjectType);
+	UFUNCTION(BlueprintCallable)
+		void AddToPool(TSubclassOf<AActor> ObjectType, UWorld* World);
+	
+	UFUNCTION(BlueprintCallable)
+		AActor* FetchFromPool(TSubclassOf<AActor> ObjectType);
 };

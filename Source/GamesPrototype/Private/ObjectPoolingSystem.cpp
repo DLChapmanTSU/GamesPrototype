@@ -3,14 +3,14 @@
 
 #include "ObjectPoolingSystem.h"
 
-void UObjectPoolingSystem::AddToPool(TSubclassOf<AActor> ObjectType)
+void UObjectPoolingSystem::AddToPool(TSubclassOf<AActor> ObjectType, UWorld* World)
 {
 	if (!ObjectPool.Contains(ObjectType))
 	{
 		ObjectPool.Add(ObjectType);
 		for (int i = 0; i < 50; i++)
 		{
-			AActor* object = GetWorld()->SpawnActor(ObjectType);
+			AActor* object = World->SpawnActor(ObjectType);
 			object->SetActorTickEnabled(false);
 			ObjectPool[ObjectType].Add(object);
 		}

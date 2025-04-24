@@ -15,9 +15,15 @@ class GAMESPROTOTYPE_API UMainGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
-public:
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectPool")
 		UObjectPoolingSystem* PoolingSystem;
-	
+public:	
 	UMainGameInstance();
+
+	UFUNCTION(BlueprintCallable)
+	void AddToPool(TSubclassOf<AActor> ObjectType);
+
+	UFUNCTION(BlueprintCallable)
+	AActor* FetchFromPool(TSubclassOf<AActor> ObjectType);
 };
