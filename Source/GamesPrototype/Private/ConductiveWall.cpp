@@ -33,6 +33,7 @@ void AConductiveWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	ElectricTargets.Empty();
 	TArray<UPrimitiveComponent*> OverlappingComponents;
 	BoxComponent->GetOverlappingComponents(OverlappingComponents);
 

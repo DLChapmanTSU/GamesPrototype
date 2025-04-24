@@ -55,6 +55,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AttackSpawnables")
 		float SpecialAttackTimer = 0.5f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* BasicAttackSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* ElectricAttackSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* RadiationAttackSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
+		USoundBase* PickupSound;
+	
 	float CurrentNormalAttackTimer = 0.0f;
 	float CurrentSpeialAttackTimer = 0.0f;
 

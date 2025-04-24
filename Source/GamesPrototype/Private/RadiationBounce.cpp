@@ -3,6 +3,7 @@
 
 #include "RadiationBounce.h"
 #include "RadiationSplashBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
@@ -36,6 +37,9 @@ void ARadiationBounce::Tick(float DeltaTime)
 		splash->InitialiseData(ShockPower, PoolRadius);
 		SetActorRotation(CurrentTargetRotation);
 		CalculateNextBounceTarget();
+		UGameplayStatics::PlaySound2D(GetWorld(), SplashSound);
+		if (ShockPower > 0.0f)
+			UGameplayStatics::PlaySound2D(GetWorld(), ElectricSound);
 	}
 
 	SetActorLocation(GetActorLocation() + (GetActorForwardVector() * MovementSpeed * DeltaTime));
