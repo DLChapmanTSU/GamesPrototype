@@ -64,6 +64,9 @@ void ARadiationSplashBase::ApplyShock()
 {
 	HasPerformedShock = true;
 
+	if (ShockValue <= 0)
+		return;
+
 	TArray<UPrimitiveComponent*> OverlappedComponents;
 	Sphere->GetOverlappingComponents(OverlappedComponents);
 	TArray<AActor*> OverlappedActors;

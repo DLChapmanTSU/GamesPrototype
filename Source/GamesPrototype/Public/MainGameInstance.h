@@ -18,6 +18,12 @@ class GAMESPROTOTYPE_API UMainGameInstance : public UGameInstance
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ObjectPool")
 		UObjectPoolingSystem* PoolingSystem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="WinCounts")
+		int P1WinCount = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="WinCounts")
+		int P2WinCount = 0;
 public:	
 	UMainGameInstance();
 
@@ -26,4 +32,19 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	AActor* FetchFromPool(TSubclassOf<AActor> ObjectType);
+
+	UFUNCTION(BlueprintCallable)
+	int GetP1Wins();
+
+	UFUNCTION(BlueprintCallable)
+	int GetP2Wins();
+
+	UFUNCTION(BlueprintCallable)
+	void ResetScores();
+	
+	UFUNCTION(BlueprintCallable)
+	void AddP1Point();
+
+	UFUNCTION(BlueprintCallable)
+	void AddP2Point();
 };
