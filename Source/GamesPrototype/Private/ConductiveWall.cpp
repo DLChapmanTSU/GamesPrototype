@@ -68,7 +68,7 @@ void AConductiveWall::ElectricDamage(FAttackLevels levels, UElectricTree* tree, 
 			if (ElectricTargets[i]->GetUniqueID() == levels.owner)
 				continue;
 
-			if(UKismetMathLibrary::ClassIsChildOf(ElectricTargets[i]->GetClass(), GetClass()))
+			if(UKismetMathLibrary::ClassIsChildOf(ElectricTargets[i]->GetClass(), AConductiveWall::StaticClass()))
 			{
 				AConductiveWall* wall = Cast<AConductiveWall>(ElectricTargets[i]);
 				if (wall != nullptr && IsValid(wall))
