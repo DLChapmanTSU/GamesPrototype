@@ -28,5 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool GetHasPlayerTwoWon();
 	UFUNCTION(BlueprintCallable)
+		bool GetIsADraw();
+	UFUNCTION(BlueprintCallable)
 		bool HasValidStats();
 };

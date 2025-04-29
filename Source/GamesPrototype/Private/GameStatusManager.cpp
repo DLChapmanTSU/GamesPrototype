@@ -33,6 +33,15 @@ bool UGameStatusManager::GetHasPlayerTwoWon()
 	return false;
 }
 
+bool UGameStatusManager::GetIsADraw()
+{
+	if (PlayerOne != nullptr && IsValid(PlayerOne) && PlayerTwo != nullptr && IsValid(PlayerTwo))
+	{
+		return PlayerTwo->GetHealth() <= 0 && PlayerOne->GetHealth() <= 0;
+	}
+	return false;
+}
+
 bool UGameStatusManager::HasValidStats()
 {
 	return PlayerOne != nullptr && IsValid(PlayerOne) && PlayerTwo != nullptr && IsValid(PlayerTwo);
